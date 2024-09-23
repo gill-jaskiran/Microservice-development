@@ -1,5 +1,5 @@
 package ca.gbc.productservice.controller;
-
+//Controller
 import ca.gbc.productservice.dto.ProductRequest;
 import ca.gbc.productservice.dto.ProductResponse;
 import ca.gbc.productservice.model.Product;
