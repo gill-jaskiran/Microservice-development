@@ -8,6 +8,7 @@ import io.micrometer.core.ipc.http.HttpSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,21 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody ProductRequest productRequest) {
-        productService.createProduct(productRequest);
+
+  /*  public void createProduct(@RequestBody ProductRequest productRequest) {
+        productService.createProduct(productRequest); -- Would not work in integration testing as it returns void
+    }*/
+
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest){
+        ProductResponse createdProduct = productService.createProduct(productRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/api/product/" + createdProduct.id());
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED) // Sets status to 201
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(createdProduct);
     }
 
     @GetMapping

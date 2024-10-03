@@ -24,7 +24,7 @@ class ProductServiceApplicationTests {
 
     @BeforeEach
     void setup(){
-        RestAssured.baseURI = "http://localhost:";
+        RestAssured.baseURI = "http://localhost";
         RestAssured.port = port;
     }
 
@@ -38,12 +38,12 @@ class ProductServiceApplicationTests {
     void createProductTest(){
 
         String requestBody = """
-                {
+            {
                  "name" : "Samsung TV",
                  "description" : "Samsung TV - Model 2024",
-                 "price" : "2000"
-                }
-                """;
+                 "price" : 2000
+            }
+        """;
 
         // BBD - Behavioural Driven Development (Given, When, Then)
         RestAssured.given()
@@ -57,19 +57,19 @@ class ProductServiceApplicationTests {
                 .body("id", Matchers.notNullValue())
                 .body("name", Matchers.equalTo("Samsung TV"))
                 .body("description", Matchers.equalTo("Samsung TV - Model 2024"))
-                .body("price", Matchers.equalTo(2000) );
+                .body("price", Matchers.equalTo(2000));
     }
 
     @Test
     void getAllProductsTest(){
 
         String requestBody = """
-                {
+            {
                  "name" : "Samsung TV",
                  "description" : "Samsung TV - Model 2024",
-                 "price" : "2000";
-                }
-                """;
+                 "price" : 2000
+            }
+        """;
 
         // BBD - Behavioural Driven Development (Given, When, Then)
         RestAssured.given()
@@ -96,7 +96,7 @@ class ProductServiceApplicationTests {
                 .body("size()", Matchers.greaterThan(0))
                 .body("[0].name", Matchers.equalTo("Samsung TV"))
                 .body("[0].description", Matchers.equalTo("Samsung TV - Model 2024"))
-                .body("[0].price", Matchers.equalTo(2000) );
+                .body("[0].price", Matchers.equalTo(2000));
 
     }
 
