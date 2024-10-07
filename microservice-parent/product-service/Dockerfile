@@ -25,3 +25,5 @@ ENV MONGO_DB_USERNAME=admin \
 EXPOSE 8084
 
 ENTRYPOINT ["java", "-jar", "/app/product-service.jar"]
+
+# when refactoring change the expose port number and the name of the . jar file
