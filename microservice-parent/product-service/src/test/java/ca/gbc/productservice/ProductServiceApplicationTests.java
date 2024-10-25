@@ -100,5 +100,82 @@ class ProductServiceApplicationTests {
 
     }
 
+    @Test
+    void updateProductTest() {
+        String requestBodyCreate = """
+        {
+             "name" : "Samsung TV",
+             "description" : "Samsung TV - Model 2024",
+             "price" : 2000
+        }
+    """;
+
+        String productId = RestAssured.given()
+                .contentType("application/json")
+                .body(requestBodyCreate)
+                .when()
+                .post("/api/product")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .path("id");  // Extract the product ID for the update
+
+        // Updating the product
+        String requestBodyUpdate = """
+        {
+             "name" : "Samsung TV - Updated",
+             "description" : "Updated description for Samsung TV",
+             "price" : 2200
+        }
+    """;
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(requestBodyUpdate)
+                .when()
+                .put("/api/product/" + productId)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("id", Matchers.equalTo(productId))
+                .body("name", Matchers.equalTo("Samsung TV - Updated"))
+                .body("description", Matchers.equalTo("Updated description for Samsung TV"))
+                .body("price", Matchers.equalTo(2200));
+    }
+
+    @Test
+    void deleteProductTest() {
+        String requestBodyCreate = """
+        {
+             "name" : "Samsung TV",
+             "description" : "Samsung TV - Model 2024",
+             "price" : 2000
+        }
+    """;
+
+        String productId = RestAssured.given()
+                .contentType("application/json")
+                .body(requestBodyCreate)
+                .when()
+                .post("/api/product")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .path("id");
+
+        // Deleting the product
+        RestAssured.given()
+                .when()
+                .delete("/api/product/" + productId)
+                .then()
+                .log().all()
+                .statusCode(204);
+
+
+    }
+
 
 }
+
