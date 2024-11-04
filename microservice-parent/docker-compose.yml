@@ -10,12 +10,48 @@ version: '3.9'
 
 services:
 
+  inventory-service:
+    image: 8160202/inventory-service
+    ports:
+      - "8003:8083"
+    build:
+      context: ./inventory-service     # The directory where the Dockerfile resides
+      dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
+    container_name: inventory-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5434/inventory-service
+      - SPRING_DATASOURCE_USERNAME:admin
+      - SPRING_DATASOURCE_PASSWORD:password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres-inventory
+    networks:
+      - spring
+
+
+  order-service:
+    image: order-service
+    ports:
+      - "8084:8084"
+    build:
+      context: ./order-service     # The directory where the Dockerfile resides
+      dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
+    container_name: order-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mongodb
+    networks:
+      - spring
+
+
   product-service:
     image: product-service
     ports:
       - "8084:8084"
     build:
-      context: ./product-service     # The directory where they Dockerfile resides
+      context: ./product-service     # The directory where the Dockerfile resides
       dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
     container_name: product-service
     environment:
