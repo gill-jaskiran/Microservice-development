@@ -13,7 +13,7 @@ services:
   inventory-service:
     image: 8160202/inventory-service
     ports:
-      - "8003:8083"
+      - "8083:8083"
     build:
       context: ./inventory-service     # The directory where the Dockerfile resides
       dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
@@ -33,7 +33,7 @@ services:
   order-service:
     image: order-service
     ports:
-      - "8084:8084"
+      - "8082:8082"
     build:
       context: ./order-service     # The directory where the Dockerfile resides
       dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
