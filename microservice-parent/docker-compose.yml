@@ -11,7 +11,7 @@ version: '3.9'
 services:
 
   inventory-service:
-    image: 8160202/inventory-service
+    image: inventory-service
     ports:
       - "8083:8083"
     build:
