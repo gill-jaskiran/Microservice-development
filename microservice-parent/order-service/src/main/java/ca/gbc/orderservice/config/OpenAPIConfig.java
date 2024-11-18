@@ -15,7 +15,7 @@ public class OpenAPIConfig {
     private String version;
 
     @Bean
-    public OpenAPI orderServiceAPI(){
+    public OpenAPI productServiceAPI(){
         return new OpenAPI()
                 .info(new Info().title("Order Service API")
                         .description("The is the REST API for Order Service")

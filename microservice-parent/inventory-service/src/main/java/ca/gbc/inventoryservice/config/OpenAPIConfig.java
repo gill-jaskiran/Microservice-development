@@ -15,7 +15,7 @@ public class OpenAPIConfig {
     private String version;
 
     @Bean
-    public OpenAPI inventoryServiceAPI(){
+    public OpenAPI productServiceAPI(){
         return new OpenAPI()
                 .info(new Info().title("Inventory Service API")
                         .description("The is the REST API for Inventory Service")
