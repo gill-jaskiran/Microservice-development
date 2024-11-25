@@ -49,7 +49,7 @@ services:
   product-service:
     image: product-service
     ports:
-      - "8084:8084"
+      - "8087:8087"
     build:
       context: ./product-service     # The directory where the Dockerfile resides
       dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image

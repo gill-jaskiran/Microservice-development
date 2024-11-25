@@ -13,7 +13,7 @@ services:
       - POSTGRES_DB=inventory-service
     volumes:
       - ./data/inventory:/var/lib/postgresql/data
-      - ./init/inventory/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init/inventory/init.sql:/docker-entrypoint-initpassworddb.d/init.sql
 
 
   pgadmin:
