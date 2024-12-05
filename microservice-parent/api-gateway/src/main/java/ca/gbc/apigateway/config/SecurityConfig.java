@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Slf4j
 @Configuration
-@EnableWebFluxSecurity
+/*@EnableWebFluxSecurity*/
 public class SecurityConfig {
 
     private final String[] noauthResourceUris = {
