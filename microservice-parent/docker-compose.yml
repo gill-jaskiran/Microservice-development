@@ -10,6 +10,76 @@ version: '3.9'
 
 services:
 
+  api-gateway:
+    image: api-gateway
+    ports:
+      - "9000:9000"
+    build:
+      context: ./api-gateway     # The directory where the Dockerfile resides
+      dockerfile: ./Dockerfile   # Path to the Dockerfile
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVICES_PRODUCT_URL=http://product-service:8087
+      - SERVICES_ORDER_URL=http://order-service:8082
+      - SERVICES_INVENTORY_URL=http://inventory-service:8083
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/spring-microservices-security-realm
+    depends_on:
+      - product-service
+      - order-service
+      - inventory-service
+      - keycloak
+    networks:
+      - spring
+
+  notification-service:
+    image: notification-service
+    ports:
+      - "8085:8085"
+    build:
+      context: ./notification-service  # The directory where the Dockerfile resides
+      dockerfile: ./Dockerfile         # Specify the Dockerfile for use to build image
+    container_name: notification-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_MAIL_HOST=sandbox.smtp.mailtrap.io
+      - SPRING_MAIL_PORT=2525
+      - SPRING_MAIL_USERNAME=d68602ed0b9ac4
+      - SPRING_MAIL_PASSWORD=2908d79f17d568
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_KAFKA_CONSUMER_GROUP_ID=notificationService
+    depends_on:
+      - kafka
+    networks:
+      - spring
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+    networks:
+      - spring
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - spring
+
+
+
   inventory-service:
     image: inventory-service
     ports:
@@ -30,10 +100,11 @@ services:
       - spring
 
 
+
   order-service:
     image: order-service
     ports:
-      - "8082:8082"
+      - "8089:8089"
     build:
       context: ./order-service     # The directory where the Dockerfile resides
       dockerfile: ./Dockerfile       # Specify the Dockerfile for use to build image
